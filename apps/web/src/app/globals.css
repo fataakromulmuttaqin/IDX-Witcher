@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+:root {
+  /* Core background */
+  --bg-base: #030712;
+  --bg-surface: #0b1221;
+  --bg-surface-elevated: #111a2d;
+  --bg-surface-highlight: #162236;
+
+  /* Border */
+  --border-default: #1e3a5f;
+  --border-hover: #2b4c73;
+  --border-subtle: rgba(30, 58, 95, 0.5);
+
+  /* Text */
+  --text-primary: #f0f5ff;
+  --text-secondary: #8fa3bf;
+  --text-muted: #5a6d85;
+
+  /* Accents */
+  --accent-cyan: #00e5ff;
+  --accent-cyan-glow: rgba(0, 229, 255, 0.15);
+  --accent-violet: #7c3aed;
+  --accent-violet-glow: rgba(124, 58, 237, 0.2);
+
+  /* Semantic */
+  --positive: #10b981;
+  --positive-dim: rgba(16, 185, 129, 0.12);
+  --negative: #ef4444;
+  --negative-dim: rgba(239, 68, 68, 0.12);
+  --warning: #f59e0b;
+  --warning-dim: rgba(245, 158, 11, 0.12);
+  --info: #3b82f6;
+  --info-dim: rgba(59, 130, 246, 0.12);
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%);
+  --gradient-surface: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-elevated: var(--bg-surface-elevated);
+  --color-bg-surface-highlight: var(--bg-surface-highlight);
+
+  --color-border-default: var(--border-default);
+  --color-border-hover: var(--border-hover);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-violet: var(--accent-violet);
+
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "tnum" on, "lnum" on;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-gradient {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 24px var(--accent-cyan-glow);
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 24px var(--accent-violet-glow);
+  }
+
+  .card-surface {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-default);
+  }
+
+  .card-surface-hover {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-surface-hover:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.06);
+  }
+
+  .number-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

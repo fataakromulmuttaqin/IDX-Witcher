@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Build
+.next/
+dist/
+build/
+*.egg-info/
+
+# Data
+.data/
+data/
+*.parquet
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Reference repos
+references/
