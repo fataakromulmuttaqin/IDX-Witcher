@@ -6,7 +6,7 @@ from decimal import Decimal
 from sqlalchemy import String, Float, Integer, Date, DateTime, Boolean, Numeric, Index, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
-from IDX Witcher_api.db.base import Base
+from idxwitcher_api.db.base import Base
 
 
 class Company(Base):

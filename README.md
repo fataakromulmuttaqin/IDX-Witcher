@@ -38,7 +38,7 @@ uv venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uv pip install -e ".[dev]"
 cp .env.example .env
-uvicorn IDX Witcher_api.main:app --reload
+uvicorn idxwitcher_api.main:app --reload
 ```
 
 Backend berjalan di http://localhost:8000.

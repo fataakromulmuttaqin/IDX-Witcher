@@ -3,9 +3,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from IDX Witcher_api.db import get_db
-from IDX Witcher_api.db.models import Company
-from IDX Witcher_api.schemas.company import CompanyOut
+from idxwitcher_api.db import get_db
+from idxwitcher_api.db.models import Company
+from idxwitcher_api.schemas.company import CompanyOut
 
 router = APIRouter(prefix="/companies", tags=["Companies"])
 

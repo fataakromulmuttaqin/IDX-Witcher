@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from IDX Witcher_api.main import app
+from idxwitcher_api.main import app
 
 
 @pytest.fixture
@@ -16,7 +16,7 @@ def test_health_check(client: TestClient) -> None:
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "ok"
-    assert data["service"] == "IDX Witcher-api"
+    assert data["service"] == "idx-witcher-api"
 
 
 def test_root(client: TestClient) -> None:

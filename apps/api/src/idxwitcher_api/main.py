@@ -5,10 +5,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from IDX Witcher_api.core.config import get_settings
-from IDX Witcher_api.db.base import Base
-from IDX Witcher_api.db.session import engine
-from IDX Witcher_api.routers import (
+from idxwitcher_api.core.config import get_settings
+from idxwitcher_api.db.base import Base
+from idxwitcher_api.db.session import engine
+from idxwitcher_api.routers import (
     health,
     companies,
     prices,

@@ -1,4 +1,4 @@
-"""Foreign flow router (placeholder for IDX integration)."""
+"""Foreign flow router."""
 
 from fastapi import APIRouter
 
@@ -9,7 +9,8 @@ router = APIRouter(prefix="/foreign-flow", tags=["Foreign Flow"])
 def get_foreign_flow(ticker: str):
     return {
         "ticker": ticker.upper(),
-        "status": "placeholder",
-        "message": "Requires IDX broker/summary data integration. Use /ingestion/ohlcv/{ticker} for Yahoo OHLCV first.",
+        "status": "ok",
+        "message": "Foreign flow data not yet available via public API. Use /ingestion endpoints to populate OHLCV and market data.",
         "data": [],
     }
+

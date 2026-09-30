@@ -5,9 +5,9 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from IDX Witcher_api.db import get_db
-from IDX Witcher_api.db.models import OHLCV
-from IDX Witcher_api.schemas.ohlcv import OHLCVOut
+from idxwitcher_api.db import get_db
+from idxwitcher_api.db.models import OHLCV
+from idxwitcher_api.schemas.ohlcv import OHLCVOut
 
 router = APIRouter(prefix="/prices", tags=["Prices"])
 

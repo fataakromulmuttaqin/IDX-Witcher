@@ -1,9 +1,9 @@
 [project]
-name = "IDX Witcher-api"
+name = "idx-witcher-api"
 version = "0.1.0"
 description = "IDX Witcher FastAPI backend for IDX market data and AI portfolio"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 authors = [
     { name = "IDX Witcher Team" },
 ]

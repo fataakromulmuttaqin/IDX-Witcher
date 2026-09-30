@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from IDX Witcher_api.db import get_db
-from IDX Witcher_api.db.models import MarketSummary, OHLCV
+from idxwitcher_api.db import get_db
+from idxwitcher_api.db.models import MarketSummary, OHLCV
 
 router = APIRouter(prefix="/market", tags=["Market"])
 

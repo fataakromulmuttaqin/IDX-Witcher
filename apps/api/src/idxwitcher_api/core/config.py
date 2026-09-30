@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     debug: bool = False
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
 
-    database_url: str = "postgresql://postgres:postgres@localhost:5432/IDX Witcher"
+    database_url: str = ""
     redis_url: str = "redis://localhost:6379/0"
 
     @property

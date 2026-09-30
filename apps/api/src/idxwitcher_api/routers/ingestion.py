@@ -3,8 +3,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from IDX Witcher_api.db import get_db
-from IDX Witcher_api.services.ingestion import IngestionService
+from idxwitcher_api.db import get_db
+from idxwitcher_api.services.ingestion import IngestionService
 
 router = APIRouter(prefix="/ingestion", tags=["Ingestion"])
 

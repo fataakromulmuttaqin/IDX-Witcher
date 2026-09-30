@@ -5,9 +5,9 @@ from typing import Sequence
 
 from sqlalchemy.orm import Session
 
-from IDX Witcher_api.services.idx_client import IDXClient
-from IDX Witcher_api.services.yahoo import YahooFinanceClient
-from IDX Witcher_api.db.models import Company, OHLCV, MarketSummary
+from idxwitcher_api.services.idx_client import IDXClient
+from idxwitcher_api.services.yahoo import YahooFinanceClient
+from idxwitcher_api.db.models import Company, OHLCV, MarketSummary
 
 log = logging.getLogger(__name__)
 

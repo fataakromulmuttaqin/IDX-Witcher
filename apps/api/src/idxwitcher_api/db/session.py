@@ -4,11 +4,16 @@ from collections.abc import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
-from IDX Witcher_api.core.config import get_settings
+from idxwitcher_api.core.config import get_settings
 
 settings = get_settings()
 
-engine = create_engine(settings.database_url, pool_pre_ping=True, future=True)
+# Default to SQLite for local dev if no DATABASE_URL is set.
+_default_db = "sqlite:///./idxwitcher_dev.db"
+
+DATABASE_URL = settings.database_url or _default_db
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, future=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
