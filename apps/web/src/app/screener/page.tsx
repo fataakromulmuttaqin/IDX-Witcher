@@ -1,21 +1,37 @@
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { AppShell } from "@/components/layout/AppShell";
 import { api, Company } from "@/lib/api";
 import { mockCompanies } from "@/lib/mock-data";
 
-export const metadata: Metadata = {
-  title: "Screener — IDX Witcher",
-  description: "Filter dan temukan saham berdasarkan sektor dan kriteria lainnya.",
-};
+export default function ScreenerPage() {
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [sector, setSector] = useState<string>("");
+  const [query, setQuery] = useState<string>("");
 
-async function getCompanies(): Promise<Company[]> {
-  return (await api.companies()) ?? mockCompanies;
-}
+  useEffect(() => {
+    setLoading(true);
+    api
+      .companies()
+      .then((data) => {
+        setCompanies(data ?? mockCompanies);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-export default async function ScreenerPage() {
-  const companies = await getCompanies();
+  const sectors = Array.from(new Set(companies.map((c) => c.sector).filter((s): s is string => Boolean(s))));
+
+  const filtered = companies.filter((c) => {
+    const matchSector = sector ? c.sector?.toLowerCase() === sector.toLowerCase() : true;
+    const q = query.toLowerCase();
+    const matchQuery =
+      !q || c.code.toLowerCase().includes(q) || c.name.toLowerCase().includes(q);
+    return matchSector && matchQuery;
+  });
 
   return (
     <AppShell>
@@ -28,6 +44,36 @@ export default async function ScreenerPage() {
             Temukan saham berdasarkan sektor dan kriteria fundamental.
           </p>
         </div>
+
+        <Card className="flex flex-col gap-4 p-4 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="block text-xs font-medium text-[var(--text-muted)]">
+              Cari saham
+            </label>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Kode atau nama saham"
+              className="mt-1 w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-xs font-medium text-[var(--text-muted)]">Sektor</label>
+            <select
+              value={sector}
+              onChange={(e) => setSector(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-cyan)]"
+            >
+              <option value="">Semua sektor</option>
+              {sectors.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
+        </Card>
 
         <Card>
           <div className="overflow-x-auto">
@@ -42,26 +88,43 @@ export default async function ScreenerPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-subtle)]">
-                {companies.map((c) => (
-                  <tr key={c.code} className="group hover:bg-[var(--bg-surface-highlight)]/50 transition-colors">
-                    <td className="py-4 pl-2">
-                      <a
-                        href={`/stocks/${c.code}`}
-                        className="font-bold tabular-nums text-[var(--text-primary)] group-hover:text-[var(--accent-cyan)] transition-colors"
-                      >
-                        {c.code}
-                      </a>
+                {loading ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-[var(--text-muted)]">
+                      Loading...
                     </td>
-                    <td className="py-4 text-[var(--text-secondary)]">{c.name}</td>
-                    <td className="py-4 text-[var(--text-secondary)]">{c.sector ?? "—"}</td>
-                    <td className="py-4">
-                      <Badge variant={c.is_active ? "positive" : "default"}>
-                        {c.is_active ? "Active" : "Inactive"}
-                      </Badge>
-                    </td>
-                    <td className="py-4 text-[var(--text-muted)]">{c.source}</td>
                   </tr>
-                ))}
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-[var(--text-muted)]">
+                      Tidak ada saham yang cocok.
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((c) => (
+                    <tr
+                      key={c.code}
+                      className="group hover:bg-[var(--bg-surface-highlight)]/50 transition-colors"
+                    >
+                      <td className="py-4 pl-2">
+                        <a
+                          href={`/stocks/${c.code}`}
+                          className="font-bold tabular-nums text-[var(--text-primary)] group-hover:text-[var(--accent-cyan)] transition-colors"
+                        >
+                          {c.code}
+                        </a>
+                      </td>
+                      <td className="py-4 text-[var(--text-secondary)]">{c.name}</td>
+                      <td className="py-4 text-[var(--text-secondary)]">{c.sector ?? "—"}</td>
+                      <td className="py-4">
+                        <Badge variant={c.is_active ? "positive" : "default"}>
+                          {c.is_active ? "Active" : "Inactive"}
+                        </Badge>
+                      </td>
+                      <td className="py-4 text-[var(--text-muted)]">{c.source}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

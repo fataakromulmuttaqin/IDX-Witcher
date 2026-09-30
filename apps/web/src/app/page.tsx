@@ -57,6 +57,12 @@ export default async function Home() {
           >
             Screener Saham
           </a>
+          <a
+            href="/portfolio"
+            className="rounded-full border border-[var(--border-default)] bg-[var(--bg-surface-elevated)] px-8 py-3 text-sm font-semibold text-[var(--text-primary)] transition hover:border-[var(--border-hover)] hover:bg-[var(--bg-surface-highlight)]"
+          >
+            Portfolio Builder
+          </a>
         </div>
 
         <div className="mt-12 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6 text-left shadow-lg">
