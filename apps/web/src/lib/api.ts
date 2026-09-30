@@ -10,6 +10,21 @@ async function fetchJson<T>(path: string, fallback?: T): Promise<T | null> {
   }
 }
 
+async function postJson<T>(path: string, body?: object): Promise<T | null> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
 export interface HealthData {
   status: string;
   service: string;
@@ -61,6 +76,21 @@ export interface TopMover {
   volume: number;
 }
 
+export interface PortfolioResult {
+  ok: boolean;
+  risk_profile: string;
+  portfolio: {
+    code: string;
+    weight: number;
+    expected_return_5d: number;
+    confidence: number;
+  }[];
+  cash_weight: number;
+  expected_return_annual: number;
+  volatility_annual: number;
+  sharpe: number;
+}
+
 export const api = {
   health: () => fetchJson<HealthData>("/health"),
   companies: () => fetchJson<Company[]>("/companies"),
@@ -72,4 +102,7 @@ export const api = {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return fetchJson<Company[]>(`/screen${qs}`);
   },
+  predict: (ticker: string) => fetchJson<Record<string, unknown>>(`/ai/predict/${ticker}`),
+  buildPortfolio: (riskProfile: string) =>
+    postJson<PortfolioResult>("/portfolio/build", { risk_profile: riskProfile }),
 };

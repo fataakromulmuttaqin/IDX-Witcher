@@ -18,6 +18,8 @@ from idxwitcher_api.routers import (
     foreign_flow,
     brokers,
     corporate_actions,
+    ai,
+    portfolio,
 )
 
 
@@ -57,6 +59,8 @@ app.include_router(ingestion.router)
 app.include_router(foreign_flow.router)
 app.include_router(brokers.router)
 app.include_router(corporate_actions.router)
+app.include_router(ai.router)
+app.include_router(portfolio.router)
 
 
 @app.get("/")
