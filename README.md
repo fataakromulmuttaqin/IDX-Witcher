@@ -17,14 +17,16 @@ IDX Witcher/
 
 ## Prasyarat
 
-- Python 3.13+
+- Python 3.11+
 - Node.js 20+
-- Docker Desktop
-- uv (Python package manager)
+- Docker Desktop (opsional)
+- pip atau uv (Python package manager)
 
 ## Setup Development
 
-### 1. Jalankan database
+### 1. Jalankan database (opsional — SQLite digunakan sebagai default)
+
+Jika ingin PostgreSQL:
 
 ```bash
 docker compose up -d
@@ -34,9 +36,9 @@ docker compose up -d
 
 ```bash
 cd apps/api
-uv venv
+python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-uv pip install -e ".[dev]"
+python -m pip install -e ".[dev]"
 cp .env.example .env
 uvicorn idxwitcher_api.main:app --reload
 ```
@@ -75,7 +77,7 @@ curl -X POST "http://localhost:8000/ingestion/batch?tickers=BBCA,BBRI,TLKM&perio
 ## API Endpoints (Fase 1)
 
 | Endpoint | Deskripsi |
-|---|---|
+|---|---|---|
 | `GET /health` | Status API |
 | `GET /companies` | List perusahaan |
 | `GET /companies/{code}` | Detail perusahaan |
@@ -88,9 +90,9 @@ curl -X POST "http://localhost:8000/ingestion/batch?tickers=BBCA,BBRI,TLKM&perio
 | `POST /ingestion/ohlcv/{ticker}` | Ingest Yahoo OHLCV |
 | `POST /ingestion/batch` | Ingest batch |
 | `POST /ingestion/market-summary` | Ingest IHSG summary |
-| `GET /foreign-flow/{ticker}` | Placeholder |
-| `GET /brokers` | Placeholder |
-| `GET /corporate-actions/{ticker}` | Placeholder |
+| `GET /foreign-flow/{ticker}` | Placeholder (memerlukan data IDX) |
+| `GET /brokers` | Placeholder (memerlukan data IDX) |
+| `GET /corporate-actions/{ticker}` | Placeholder (memerlukan data IDX) |
 
 Dokumen lengkap OpenAPI: http://localhost:8000/docs
 
@@ -107,7 +109,7 @@ Dokumen lengkap OpenAPI: http://localhost:8000/docs
 
 ```bash
 # Build image
-docker build -t IDX Witcher-api ./apps/api
+docker build -t idx-witcher-api ./apps/api
 
 # Push ke registry pilihan
 ```
