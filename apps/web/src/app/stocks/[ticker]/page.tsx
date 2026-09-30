@@ -22,7 +22,7 @@ async function getPrices(ticker: string): Promise<OHLCV[]> {
 export async function generateMetadata({ params }: StockPageProps): Promise<Metadata> {
   const { ticker } = await params;
   return {
-    title: `${ticker.toUpperCase()} — Alpha Cygni`,
+    title: `${ticker.toUpperCase()} — IDX Witcher`,
   };
 }
 

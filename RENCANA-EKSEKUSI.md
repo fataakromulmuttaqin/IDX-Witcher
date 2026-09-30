@@ -1,8 +1,8 @@
-# Rencana Eksekusi Alpha Cygni
+# Rencana Eksekusi IDX Witcher
 
 **Status:** Draft untuk dimulai  
 **Pilihan awal yang sudah diputuskan:**
-- Lokasi project: folder baru `Alpha Cygni/`
+- Lokasi project: folder baru `IDX Witcher/`
 - Backend: **FastAPI + PostgreSQL + DuckDB**
 - Auth & billing: **skip di awal** (fokus data + AI)
 - Deployment target: **Vercel (frontend) + Railway/Fly.io (backend)**
@@ -11,10 +11,10 @@
 
 ## Pendekatan Umum
 
-Kami membangun Alpha Cygni dengan pola **"monorepo modular"**:
+Kami membangun IDX Witcher dengan pola **"monorepo modular"**:
 
 ```
-Alpha Cygni/
+IDX Witcher/
 ├── apps/
 │   ├── web/                 # Frontend Next.js/React 19 + Tailwind
 │   └── api/                 # FastAPI backend
@@ -46,7 +46,7 @@ Tiap fase menghasilkan milestone yang **bisa didemo**.
 
 | ID | Task | Deliverable | Acceptance Criteria |
 |---|---|---|---|
-| P0-1 | Inisialisasi monorepo | `Alpha Cygni/` dengan `apps/`, `packages/`, `infra/` | `README.md` menjelaskan cara setup |
+| P0-1 | Inisialisasi monorepo | `IDX Witcher/` dengan `apps/`, `packages/`, `infra/` | `README.md` menjelaskan cara setup |
 | P0-2 | Setup `apps/api/` FastAPI skeleton | `/health`, `/docs`, struktur router, env config | `uv run uvicorn main:app` jalan |
 | P0-3 | Setup `apps/web/` Next.js 15 + Tailwind 4 | Halaman root, layout, routing dasar | `pnpm dev` jalan di `localhost:3000` |
 | P0-4 | Setup PostgreSQL & DuckDB via Docker Compose | `docker compose up` jalan | Service `db`, `duckdb`, `redis` reachable |
@@ -187,7 +187,7 @@ Tiap fase menghasilkan milestone yang **bisa didemo**.
 | DEP-7 | Documentation launch | `docs/README.md`, API docs | End-user guide |
 | DEP-8 | Feedback loop | Tombol feedback, analytics | Data masuk |
 
-**Milestone:** Alpha Cygni live untuk beta tester.
+**Milestone:** IDX Witcher live untuk beta tester.
 
 ---
 
@@ -263,7 +263,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4
 
 ## Checklist Persiapan Sebelum Mulai Coding
 
-- [ ] Folder `Alpha Cygni/` sudah dibuat
+- [ ] Folder `IDX Witcher/` sudah dibuat
 - [ ] Python 3.13+ & Node.js 20+ terinstall
 - [ ] Docker Desktop terinstall & running
 - [ ] Git repo initialized

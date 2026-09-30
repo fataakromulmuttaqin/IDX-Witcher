@@ -13,11 +13,11 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = "Alpha Cygni API"
+    app_name: str = "IDX Witcher API"
     debug: bool = False
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
 
-    database_url: str = "postgresql://postgres:postgres@localhost:5432/Alpha Cygni"
+    database_url: str = "postgresql://postgres:postgres@localhost:5432/IDX Witcher"
     redis_url: str = "redis://localhost:6379/0"
 
     @property

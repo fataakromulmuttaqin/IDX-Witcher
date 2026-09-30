@@ -6,7 +6,7 @@ import { api, Company } from "@/lib/api";
 import { mockCompanies } from "@/lib/mock-data";
 
 export const metadata: Metadata = {
-  title: "Screener — Alpha Cygni",
+  title: "Screener — IDX Witcher",
   description: "Filter dan temukan saham berdasarkan sektor dan kriteria lainnya.",
 };
 

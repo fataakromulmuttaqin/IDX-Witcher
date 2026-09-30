@@ -1,11 +1,11 @@
-# Alpha Cygni
+# IDX Witcher
 
 Platform riset dan optimasi portofolio saham Indonesia berbasis AI, menggabungkan infrastruktur data [idx-bei](https://github.com/nichsedge/idx-bei) dengan model AI [NeuralAlpha](https://github.com/raindragon14/NeuralAlpha).
 
 ## Struktur Repo
 
 ```
-Alpha Cygni/
+IDX Witcher/
 ├── apps/
 │   ├── api/          # FastAPI backend
 │   └── web/          # Next.js frontend
@@ -38,7 +38,7 @@ uv venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 uv pip install -e ".[dev]"
 cp .env.example .env
-uvicorn Alpha Cygni_api.main:app --reload
+uvicorn IDX Witcher_api.main:app --reload
 ```
 
 Backend berjalan di http://localhost:8000.
@@ -107,7 +107,7 @@ Dokumen lengkap OpenAPI: http://localhost:8000/docs
 
 ```bash
 # Build image
-docker build -t Alpha Cygni-api ./apps/api
+docker build -t IDX Witcher-api ./apps/api
 
 # Push ke registry pilihan
 ```

@@ -1,3 +1,3 @@
-"""Alpha Cygni API package."""
+"""IDX Witcher API package."""
 
 __version__ = "0.1.0"

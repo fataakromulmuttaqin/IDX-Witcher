@@ -8,7 +8,7 @@ import { formatCompact, formatNumber, formatPercent } from "@/lib/format";
 import { mockMarketSummary, mockTopMovers } from "@/lib/mock-data";
 
 export const metadata: Metadata = {
-  title: "Dashboard — Alpha Cygni",
+  title: "Dashboard — IDX Witcher",
   description: "Ringkasan pasar saham Indonesia",
 };
 

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "Signals — Alpha Cygni",
+  title: "Signals — IDX Witcher",
   description: "Sinyal dan briefing harian pasar saham Indonesia.",
 };
 

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { api } from "@/lib/api";
 
 export const metadata: Metadata = {
-  title: "Alpha Cygni — AI Portfolio & IDX Analytics",
+  title: "IDX Witcher — AI Portfolio & IDX Analytics",
   description: "Platform riset dan optimasi portofolio saham Indonesia berbasis AI.",
 };
 

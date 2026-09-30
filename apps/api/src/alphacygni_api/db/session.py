@@ -4,7 +4,7 @@ from collections.abc import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
-from Alpha Cygni_api.core.config import get_settings
+from IDX Witcher_api.core.config import get_settings
 
 settings = get_settings()
 

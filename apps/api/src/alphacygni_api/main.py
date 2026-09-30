@@ -5,10 +5,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from Alpha Cygni_api.core.config import get_settings
-from Alpha Cygni_api.db.base import Base
-from Alpha Cygni_api.db.session import engine
-from Alpha Cygni_api.routers import (
+from IDX Witcher_api.core.config import get_settings
+from IDX Witcher_api.db.base import Base
+from IDX Witcher_api.db.session import engine
+from IDX Witcher_api.routers import (
     health,
     companies,
     prices,
@@ -33,7 +33,7 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
-    description="Alpha Cygni backend API for IDX market data and AI portfolio.",
+    description="IDX Witcher backend API for IDX market data and AI portfolio.",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -62,7 +62,7 @@ app.include_router(corporate_actions.router)
 @app.get("/")
 async def root() -> dict:
     return {
-        "message": "Welcome to Alpha Cygni API",
+        "message": "Welcome to IDX Witcher API",
         "docs": "/docs",
         "health": "/health",
     }

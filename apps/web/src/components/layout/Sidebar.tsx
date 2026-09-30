@@ -76,7 +76,7 @@ export function Sidebar() {
               N
             </div>
             <div>
-              <span className="text-lg font-bold tracking-tight text-[var(--text-primary)]">Alpha Cygni</span>
+              <span className="text-lg font-bold tracking-tight text-[var(--text-primary)]">IDX Witcher</span>
             </div>
           </div>
 

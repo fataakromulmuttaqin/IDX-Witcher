@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/Card";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "Portfolio — Alpha Cygni",
+  title: "Portfolio — IDX Witcher",
   description: "AI-optimized portfolio builder untuk saham LQ45.",
 };
 

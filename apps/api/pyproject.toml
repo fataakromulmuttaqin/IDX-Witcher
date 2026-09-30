@@ -1,11 +1,11 @@
 [project]
-name = "Alpha Cygni-api"
+name = "IDX Witcher-api"
 version = "0.1.0"
-description = "Alpha Cygni FastAPI backend for IDX market data and AI portfolio"
+description = "IDX Witcher FastAPI backend for IDX market data and AI portfolio"
 readme = "README.md"
 requires-python = ">=3.13"
 authors = [
-    { name = "Alpha Cygni Team" },
+    { name = "IDX Witcher Team" },
 ]
 license = { text = "MIT" }
 dependencies = [
