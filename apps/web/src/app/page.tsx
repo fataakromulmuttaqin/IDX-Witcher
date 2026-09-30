@@ -36,7 +36,7 @@ export default async function Home() {
         </div>
 
         <h1 className="text-5xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-6xl">
-          Alpha<span className="text-gradient">Cygni</span>
+          IDX <span className="text-gradient">Witcher</span>
         </h1>
         <p className="mt-6 text-lg leading-8 text-[var(--text-secondary)]">
           Platform riset & optimasi portofolio saham Indonesia berbasis AI.
