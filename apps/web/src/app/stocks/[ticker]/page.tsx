@@ -26,6 +26,21 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
   };
 }
 
+export function generateStaticParams() {
+  return [
+    { ticker: "BBRI" },
+    { ticker: "BBCA" },
+    { ticker: "BMRI" },
+    { ticker: "BBNI" },
+    { ticker: "TLKM" },
+    { ticker: "ASII" },
+    { ticker: "UNVR" },
+    { ticker: "INDF" },
+    { ticker: "ICBP" },
+    { ticker: "TPIA" },
+  ];
+}
+
 export default async function StockPage({ params }: StockPageProps) {
   const { ticker } = await params;
   const code = ticker.toUpperCase();
