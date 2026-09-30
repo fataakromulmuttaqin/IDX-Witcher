@@ -109,6 +109,53 @@ def normalize_idx_ohlcv(data: dict, as_of_date: date | None = None) -> list[dict
     return records
 
 
+class IDXDataClient:
+    """High-level client for IDX data enrichment."""
+
+    def __init__(self):
+        self.client = IDXClient()
+
+    def fetch_company_details(self, code: str) -> dict | None:
+        """Fetch company profile from IDX and normalize to internal format."""
+        profiles = self.client.fetch_company_profiles()
+        if not profiles or "data" not in profiles:
+            return None
+
+        for row in profiles.get("data", []):
+            if str(row.get("StockCode", "")).upper() == code.upper().replace(".JK", ""):
+                return {
+                    "code": code.upper().replace(".JK", ""),
+                    "name": row.get("CompanyName") or row.get("Name"),
+                    "sector": row.get("Sector"),
+                    "sub_sector": row.get("SubSector"),
+                    "listing_date": row.get("ListingDate"),
+                    "shares": row.get("Shares"),
+                    "source": "idx",
+                }
+        return None
+
+    def fetch_latest_quote(self, code: str) -> dict | None:
+        """Fetch latest stock summary for a ticker."""
+        data = self.client.fetch_stock_summary()
+        if not data or "data" not in data:
+            return None
+
+        for row in data.get("data", []):
+            if str(row.get("StockCode", "")).upper() == code.upper().replace(".JK", ""):
+                return {
+                    "code": code.upper().replace(".JK", ""),
+                    "open": _to_decimal(row.get("OpenPrice")),
+                    "high": _to_decimal(row.get("HighPrice")),
+                    "low": _to_decimal(row.get("LowPrice")),
+                    "close": _to_decimal(row.get("ClosePrice")),
+                    "volume": _to_int(row.get("Volume")),
+                    "value": _to_decimal(row.get("Value")),
+                    "frequency": _to_int(row.get("Frequency")),
+                    "source": "idx",
+                }
+        return None
+
+
 def _to_decimal(value):
     if value is None or value == "":
         return None

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 
     database_url: str = ""
     redis_url: str = "redis://localhost:6379/0"
+    finnhub_api_key: str = ""
 
     @property
     def cors_origin_list(self) -> list[str]:
