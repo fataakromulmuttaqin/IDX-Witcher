@@ -15,9 +15,16 @@ export function BackendStatus() {
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-    fetch(`${apiUrl}/health`, { cache: "no-store" })
+    fetch(`${apiUrl}/health`, { cache: "no-store", mode: "cors" })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setHealth(data))
+      .then((data) => {
+        setHealth(data);
+        console.log("Backend health:", data);
+      })
+      .catch((err) => {
+        console.error("Backend health error:", err);
+        setHealth(null);
+      })
       .finally(() => setLoading(false));
   }, []);
 
