@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     app_name: str = "IDX Witcher API"
     debug: bool = False
-    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    cors_origins: str = "*"
 
     database_url: str = ""
     redis_url: str = "redis://localhost:6379/0"
