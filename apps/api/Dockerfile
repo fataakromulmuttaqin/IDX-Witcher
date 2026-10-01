@@ -8,15 +8,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pip deps (fallback if uv unavailable)
-RUN pip install --no-cache-dir uv || echo "uv not required"
-
+# Copy dependency file first for layer caching
 COPY pyproject.toml ./
 COPY src ./src
 
-# Prefer uv, fallback to pip install editable
-RUN (uv pip install --system -e .) || (pip install --no-cache-dir -e .)
+# Install project with all dependencies
+RUN pip install --no-cache-dir -e .
 
+# Copy the rest of the application
 COPY . ./
 
 EXPOSE 8000
