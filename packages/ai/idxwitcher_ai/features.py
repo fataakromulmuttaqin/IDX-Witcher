@@ -28,6 +28,12 @@ def add_feature_pipeline(df: pd.DataFrame) -> pd.DataFrame:
     if "close" not in data.columns:
         raise ValueError("DataFrame must contain a 'close' column")
 
+    # Cast price/volume columns to float to avoid Decimal issues from DB rows
+    numeric_cols = ["open", "high", "low", "close", "volume"]
+    for col in numeric_cols:
+        if col in data.columns:
+            data[col] = data[col].astype(float)
+
     # Returns
     data["return_1d"] = data["close"].pct_change()
     data["log_return"] = np.log(data["close"].astype(float) / data["close"].shift(1).astype(float))
