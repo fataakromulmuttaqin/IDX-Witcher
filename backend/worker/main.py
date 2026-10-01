@@ -4,6 +4,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from core.config import get_settings
+from worker.pipeline import run_daily_pipeline
 
 
 def main() -> None:
@@ -15,7 +16,7 @@ def main() -> None:
     sched = BlockingScheduler(timezone=cfg.timezone)
     common = {"max_instances": 1, "coalesce": True, "misfire_grace_time": 3600}
     sched.add_job(
-        lambda: None,
+        run_daily_pipeline,
         CronTrigger(day_of_week="mon-fri", hour=cfg.pipeline_hour, minute=0),
         id="daily_pipeline",
         **common,
