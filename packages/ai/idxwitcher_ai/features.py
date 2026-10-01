@@ -30,7 +30,7 @@ def add_feature_pipeline(df: pd.DataFrame) -> pd.DataFrame:
 
     # Returns
     data["return_1d"] = data["close"].pct_change()
-    data["log_return"] = np.log(data["close"] / data["close"].shift(1))
+    data["log_return"] = np.log(data["close"].astype(float) / data["close"].shift(1).astype(float))
 
     # EMAs
     for window in [5, 10, 20, 50]:
