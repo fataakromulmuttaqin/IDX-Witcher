@@ -1,6 +1,7 @@
 """Portfolio builder router."""
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 import pandas as pd
 import numpy as np
@@ -17,6 +18,11 @@ from idxwitcher_ai.inference import predict_returns
 from idxwitcher_ai.optimizer import optimize_portfolio, estimate_moments
 
 router = APIRouter(prefix="/portfolio", tags=["Portfolio"])
+
+
+class PortfolioRequest(BaseModel):
+    risk_profile: str = "moderate"
+    universe: list[str] | None = None
 
 
 LQ45_TICKERS = [
@@ -59,12 +65,12 @@ def _fetch_prices(db: Session, tickers: list[str], min_days: int = 60) -> dict[s
 
 @router.post("/build")
 def build_portfolio(
-    risk_profile: str = "moderate",
-    universe: list[str] | None = None,
+    request: PortfolioRequest,
     db: Session = Depends(get_db),
 ):
     """Build AI-recommended portfolio from available OHLCV data."""
-    tickers = universe or LQ45_TICKERS
+    tickers = request.universe or LQ45_TICKERS
+    risk_profile = request.risk_profile or "moderate"
     prices = _fetch_prices(db, tickers, min_days=60)
 
     if not prices:
