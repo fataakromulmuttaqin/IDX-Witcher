@@ -1,0 +1,26 @@
+ticker,name,sector_code,is_financial
+BBCA,Bank Central Asia Tbk.,FIN,true
+BBRI,Bank Rakyat Indonesia (Persero) Tbk.,FIN,true
+BMRI,Bank Mandiri (Persero) Tbk.,FIN,true
+BBNI,Bank Negara Indonesia (Persero) Tbk.,FIN,true
+BRIS,Bank Syariah Indonesia Tbk.,FIN,true
+TLKM,Telkom Indonesia (Persero) Tbk.,INF,false
+EXCL,XL Axiata Tbk.,INF,false
+TOWR,Sarana Menara Nusantara Tbk.,INF,false
+JSMR,Jasa Marga (Persero) Tbk.,INF,false
+ASII,Astra International Tbk.,IND,false
+UNVR,Unilever Indonesia Tbk.,NCY,false
+ICBP,Indofood CBP Sukses Makmur Tbk.,NCY,false
+INDF,Indofood Sukses Makmur Tbk.,NCY,false
+CPIN,Charoen Pokphand Indonesia Tbk.,NCY,false
+KLBF,Kalbe Farma Tbk.,HLT,false
+MIKA,Mitra Keluarga Karyasehat Tbk.,HLT,false
+ANTM,Aneka Tambang Tbk.,BAS,false
+SMGR,Semen Indonesia (Persero) Tbk.,BAS,false
+INCO,Vale Indonesia Tbk.,BAS,false
+PTBA,Bukit Asam Tbk.,ENE,false
+ITMG,Indo Tambangraya Megah Tbk.,ENE,false
+GOTO,GoTo Gojek Tokopedia Tbk.,TEC,false
+BSDE,Bumi Serpong Damai Tbk.,PRO,false
+MAPI,Mitra Adiperkasa Tbk.,CYC,false
+BIRD,Blue Bird Tbk.,TRA,false

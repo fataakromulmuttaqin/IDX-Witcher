@@ -1,0 +1,69 @@
+overview:
+  columns: [ticker, name, sector, market_cap, close, ret_1d, pe_ttm, pb, div_yield, rs_rating]
+  higher: [rs_rating, div_yield]
+  lower: [pe_ttm, pb]
+
+valuation:
+  columns: [ticker, name, sector, market_cap, close, pe_ttm, pb, ps, ev_ebitda, div_yield]
+  higher: [div_yield]
+  lower: [pe_ttm, pb, ps, ev_ebitda]
+
+profitability:
+  columns: [ticker, name, sector, market_cap, close, roe, roa, gross_margin, op_margin, net_margin]
+  higher: [roe, roa, gross_margin, op_margin, net_margin]
+  lower: []
+
+growth:
+  columns: [ticker, name, sector, market_cap, close, rev_growth_yoy, eps_growth_yoy, revenue_ttm, net_income_ttm]
+  higher: [rev_growth_yoy, eps_growth_yoy, net_income_ttm]
+  lower: []
+
+dividends:
+  columns: [ticker, name, sector, market_cap, close, div_yield, payout, net_income_ttm, pe_ttm]
+  higher: [div_yield, net_income_ttm]
+  lower: [pe_ttm]
+
+balance-sheet:
+  columns: [ticker, name, sector, market_cap, close, debt_equity, current_ratio, roe]
+  higher: [current_ratio, roe]
+  lower: [debt_equity]
+
+cash-flow:
+  columns: [ticker, name, sector, market_cap, close, fcf_ttm, revenue_ttm, net_income_ttm]
+  higher: [fcf_ttm, revenue_ttm, net_income_ttm]
+  lower: []
+
+quality:
+  columns: [ticker, name, sector, market_cap, close, roe, roa, net_margin, debt_equity, current_ratio]
+  higher: [roe, roa, net_margin, current_ratio]
+  lower: [debt_equity]
+
+efficiency:
+  columns: [ticker, name, sector, market_cap, close, roe, roa, op_margin]
+  higher: [roe, roa, op_margin]
+  lower: []
+
+momentum:
+  columns: [ticker, name, sector, market_cap, close, ret_1m, ret_3m, ret_ytd, ret_1y, rs_rating]
+  higher: [ret_1m, ret_3m, ret_ytd, ret_1y, rs_rating]
+  lower: []
+
+technical:
+  columns: [ticker, name, sector, market_cap, close, ret_1d, sma50, sma200, hi_52w, lo_52w]
+  higher: []
+  lower: []
+
+liquidity:
+  columns: [ticker, name, sector, market_cap, close, value_avg20, vol_avg20]
+  higher: []
+  lower: []
+
+size:
+  columns: [ticker, name, sector, market_cap, close, revenue_ttm, net_income_ttm]
+  higher: []
+  lower: []
+
+ownership:
+  columns: [ticker, name, sector, market_cap, close]
+  higher: []
+  lower: []

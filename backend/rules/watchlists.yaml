@@ -1,0 +1,26 @@
+- slug: leading-stocks
+  name: Leading Stocks
+  description: Tren naik bertingkat, SMA200 menanjak, kuat relatif, dan likuid.
+  expr: >-
+    close > sma50 and sma50 > sma150 and sma150 > sma200
+    and sma200 > sma200_20d_ago and rs_rating >= 70 and value_avg20 >= 1e9
+
+- slug: focus-list
+  name: Focus List
+  description: Pemimpin di sektor pemimpin, harga dalam 10% dari puncak 52 minggu.
+  expr: in_leading_stocks and sector_id in @leading_sector_ids and close >= 0.90 * hi_52w
+
+- slug: setup-breakout
+  name: Setup - Breakout
+  description: Tembus puncak 20 sesi dengan volume minimal 1,5 kali rata-rata.
+  expr: close >= hi_20d_prev and volume >= 1.5 * vol_avg20 and close > sma50
+
+- slug: setup-pullback
+  name: Setup - Pullback
+  description: Koreksi ke sekitar SMA20 di dalam tren naik.
+  expr: sma50 > sma200 and close > sma50 and 0.98 * sma20 <= close <= 1.02 * sma20
+
+- slug: setup-contraction
+  name: Setup - Contraction
+  description: Volatilitas menyempit di atas SMA50.
+  expr: atr14_pct <= 0.03 and atr14_pct < 0.8 * atr14_pct_20d_ago and close > sma50

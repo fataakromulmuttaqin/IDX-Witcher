@@ -1,133 +1,69 @@
 # IDX Witcher
 
-Platform riset dan optimasi portofolio saham Indonesia berbasis AI, menggabungkan infrastruktur data [idx-bei](https://github.com/nichsedge/idx-bei) dengan model AI [NeuralAlpha](https://github.com/raindragon14/NeuralAlpha).
+Platform riset saham Bursa Efek Indonesia (IDX) berbasis data end-of-day (EOD): peta pasar, screener fundamental, watchlist berbasis aturan, portofolio pribadi, dan daily feed.
+
+> Disclaimer: alat riset dan edukasi, bukan saran investasi.
 
 ## Struktur Repo
 
-```
-IDX Witcher/
-├── apps/
-│   ├── api/          # FastAPI backend
-│   └── web/          # Next.js frontend
-├── references/       # Referensi repo asli (tidak di-commit)
-├── infra/            # Konfigurasi deployment
+```text
+idx-witcher/
+├── backend/          # Python 3.12: FastAPI, worker, ETL pipeline
+├── frontend/         # React 18 + Vite + TypeScript
+├── docs/             # PRD dan metodologi
 ├── docker-compose.yml
-└── README.md
+└── Makefile
 ```
 
-## Prasyarat
-
-- Python 3.11+
-- Node.js 20+
-- Docker Desktop (opsional)
-- pip atau uv (Python package manager)
-
-## Setup Development
-
-### 1. Jalankan database (opsional — SQLite digunakan sebagai default)
-
-Jika ingin PostgreSQL:
+## Setup Lokal
 
 ```bash
-docker compose up -d
-```
-
-### 2. Setup backend
-
-```bash
-cd apps/api
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python -m pip install -e ".[dev]"
+# 1. Environment
 cp .env.example .env
-uvicorn idxwitcher_api.main:app --reload
-```
+# edit .env sesuai kebutuhan
 
-Backend berjalan di http://localhost:8000.
+# 2. Jalankan database dan Redis
+docker compose up -d db redis
 
-### 3. Setup frontend
+# 3. Setup backend
+cd backend
+python3.12 -m venv .venv
+# .venv\Scripts\activate pada Windows
+pip install -e ".[dev]"
+alembic upgrade head
+python -m worker.cli seed
 
-```bash
-cd apps/web
-cp .env.local.example .env.local
+# 4. Backfill data historis (opsional, memakan waktu)
+python -m worker.cli backfill --start 2021-01-01
+
+# 5. Jalankan API dan worker (di terminal terpisah atau via docker compose)
+uvicorn app.main:app --reload
+python -m worker.main
+
+# 6. Setup frontend
+cd ../frontend
 npm install
 npm run dev
 ```
 
-Frontend berjalan di http://localhost:3000.
-
-### 4. Seed data & ingestion
-
-Setelah backend berjalan, jalankan dari terminal lain:
+## Perintah Berguna
 
 ```bash
-# Seed daftar perusahaan default (LQ45)
-curl -X POST http://localhost:8000/ingestion/seed-companies
-
-# Ingest harga saham dari Yahoo Finance (contoh BBCA)
-curl -X POST "http://localhost:8000/ingestion/ohlcv/BBCA?period=1y"
-
-# Ingest market summary IHSG
-curl -X POST "http://localhost:8000/ingestion/market-summary?period=1y"
-
-# Ingest batch beberapa saham
-curl -X POST "http://localhost:8000/ingestion/batch?tickers=BBCA,BBRI,TLKM&period=1y"
+make up        # docker compose up -d --build
+make seed      # seed sectors dan companies
+make backfill  # isi riwayat harga
+make test      # pytest backend
+make lint      # ruff backend
 ```
 
-## API Endpoints (Fase 1)
+## Arsitektur
 
-| Endpoint | Deskripsi |
-|---|---|---|
-| `GET /health` | Status API |
-| `GET /companies` | List perusahaan |
-| `GET /companies/{code}` | Detail perusahaan |
-| `GET /prices/{ticker}` | OHLCV per ticker |
-| `GET /prices/{ticker}/latest` | Harga terakhir |
-| `GET /market/summary` | Ringkasan IHSG |
-| `GET /market/top-movers` | Top volume |
-| `GET /screen` | Screener sederhana |
-| `POST /ingestion/seed-companies` | Seed LQ45 |
-| `POST /ingestion/ohlcv/{ticker}` | Ingest Yahoo OHLCV |
-| `POST /ingestion/batch` | Ingest batch |
-| `POST /ingestion/market-summary` | Ingest IHSG summary |
-| `GET /foreign-flow/{ticker}` | Placeholder (memerlukan data IDX) |
-| `GET /brokers` | Placeholder (memerlukan data IDX) |
-| `GET /corporate-actions/{ticker}` | Placeholder (memerlukan data IDX) |
+- **Pre-compute:** worker menghitung indikator dan aturan sekali per hari setelah penutupan bursa.
+- **Read-only API:** FastAPI hanya membaca tabel hasil hitung.
+- **Sumber data MVP:** Yahoo Finance via `yfinance` dengan antarmuka `DataProvider` agar mudah diganti.
+- **Frontend:** React SPA, state lokal untuk portofolio.
 
-Dokumen lengkap OpenAPI: http://localhost:8000/docs
+## Dokumentasi
 
-## Verifikasi
-
-- Health API: http://localhost:8000/health
-- OpenAPI docs: http://localhost:8000/docs
-- Frontend: http://localhost:3000
-- Dashboard: http://localhost:3000/dashboard
-
-## Deployment
-
-### Backend (Railway/Fly.io)
-
-```bash
-# Build image
-docker build -t idx-witcher-api ./apps/api
-
-# Push ke registry pilihan
-```
-
-### Frontend (Vercel)
-
-```bash
-cd apps/web
-vercel --prod
-```
-
-## Catatan
-
-- Proyek ini masih dalam tahap MVP (Phase 0–1).
-- Auth & billing disengaja di-skip di awal; ditambahkan di fase berikutnya.
-- Endpoint `/foreign-flow`, `/brokers`, `/corporate-actions` masih placeholder dan memerlukan integrasi scraper IDX lebih lanjut.
-- Disclaimer: platform ini adalah alat riset, bukan nasihat investasi.
-
-## Lisensi
-
-MIT
+- `docs/PRD.md` — Product Requirements Document lengkap.
+- `docs/METHODOLOGY.md` — Metodologi dan disclaimer untuk halaman Start Here.

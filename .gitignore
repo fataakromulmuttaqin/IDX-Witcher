@@ -1,41 +1,24 @@
-# Dependencies
-node_modules/
-.venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Env
 .env
 .env.local
-.env.*.local
-
-# Build
-.next/
+*.pyc
+__pycache__/
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
 dist/
 build/
-*.egg-info/
-
-# Data
-.data/
-data/
-*.parquet
+*.log
+.DS_Store
+.vscode/
+.idea/
+pgdata/
 *.db
 *.sqlite
 *.sqlite3
-
-# IDE
-.vscode/
-.idea/
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Reference repos
-references/
+backend/.env
+frontend/.env
+frontend/dist
+backend/alembic/versions/__pycache__

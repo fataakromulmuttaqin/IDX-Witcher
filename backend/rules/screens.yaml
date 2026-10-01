@@ -1,0 +1,17 @@
+- {slug: murah-menguntungkan, name: Murah dan menguntungkan, description: PER wajar dengan ROE memadai., expr: "0 < pe_ttm <= 15 and roe >= 0.12"}
+- {slug: dividen-konsisten, name: Dividen konsisten, description: Imbal dividen tinggi dengan payout tidak berlebihan dan laba positif., expr: "div_yield >= 0.04 and 0 < payout <= 0.8 and net_income_ttm > 0"}
+- {slug: utang-rendah, name: Utang rendah, description: Rasio utang terhadap ekuitas kecil dan likuiditas jangka pendek kuat., expr: "debt_equity <= 0.5 and current_ratio >= 1.5"}
+- {slug: pertumbuhan-laba, name: Pertumbuhan laba, description: Laba dan pendapatan tumbuh dibanding kuartal sama tahun lalu., expr: "eps_growth_yoy >= 0.2 and rev_growth_yoy >= 0.1"}
+- {slug: margin-tinggi, name: Margin tinggi, description: Margin bersih dan operasi tinggi., expr: "net_margin >= 0.15 and op_margin >= 0.2"}
+- {slug: di-bawah-nilai-buku, name: Di bawah nilai buku, description: PBV di bawah 1 dengan ROE positif., expr: "0 < pb < 1 and roe > 0"}
+- {slug: arus-kas-kuat, name: Arus kas kuat, description: Arus kas bebas positif dan setidaknya 80% dari laba bersih., expr: "fcf_ttm > 0 and fcf_ttm >= 0.8 * net_income_ttm"}
+- {slug: kualitas, name: Kualitas, description: ROE dan margin baik dengan utang terkendali., expr: "roe >= 0.15 and net_margin >= 0.1 and debt_equity <= 1"}
+- {slug: small-cap-likuid, name: Small cap likuid, description: Market cap Rp500 miliar sampai Rp5 triliun dengan transaksi harian memadai., expr: "5e11 <= market_cap <= 5e12 and value_avg20 >= 1e9"}
+- {slug: big-cap-defensif, name: Big cap defensif, description: Market cap besar dengan imbal dividen tinggi., expr: "market_cap >= 5e13 and div_yield >= 0.03"}
+- {slug: momentum-kuat, name: Momentum kuat, description: Naik 20% atau lebih dalam 3 bulan dan di atas SMA50., expr: "ret_3m >= 0.2 and close > sma50"}
+- {slug: dekat-high-52w, name: Dekat high 52 minggu, description: Harga dalam 5% dari puncak 52 minggu., expr: "close >= 0.95 * hi_52w"}
+- {slug: dekat-low-52w, name: Dekat low 52 minggu, description: Harga dalam 10% dari dasar 52 minggu., expr: "close <= 1.10 * lo_52w"}
+- {slug: terkoreksi-di-tren-naik, name: Terkoreksi di tren naik, description: Turun 10% atau lebih dalam sebulan tetapi masih di atas SMA200., expr: "close > sma200 and ret_1m <= -0.10"}
+- {slug: likuiditas-tinggi, name: Likuiditas tinggi, description: Nilai transaksi harian rata-rata minimal Rp50 miliar., expr: "value_avg20 >= 5e10"}
+- {slug: pertumbuhan-wajar, name: Pertumbuhan wajar, description: Pertumbuhan laba baik dengan PER tidak berlebihan., expr: "0 < pe_ttm <= 25 and eps_growth_yoy >= 0.15"}
+- {slug: laba-membaik, name: Laba membaik, description: Laba positif dan melonjak dibanding kuartal sama tahun lalu., expr: "net_income_ttm > 0 and eps_growth_yoy >= 0.5"}

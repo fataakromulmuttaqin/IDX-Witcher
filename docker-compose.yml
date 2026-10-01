@@ -1,58 +1,50 @@
-version: "3.9"
-
 services:
-  postgres:
-    image: postgres:17
-    container_name: IDX Witcher-postgres
-    restart: unless-stopped
+  db:
+    image: postgres:16
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: IDX Witcher
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      POSTGRES_USER: iw
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iw}
+      POSTGRES_DB: idxwitcher
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    ports: ["5432:5432"]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "pg_isready -U iw -d idxwitcher"]
+      interval: 5s
+      retries: 10
 
   redis:
     image: redis:7-alpine
-    container_name: IDX Witcher-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 5s
+      retries: 10
+
+  migrate:
+    build: ./backend
+    command: alembic upgrade head
+    env_file: .env
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
 
   api:
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile
-    container_name: IDX Witcher-api
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/IDX Witcher
-      REDIS_URL: redis://redis:6379/0
-      CORS_ORIGINS: http://localhost:3000,http://localhost:8000
+    build: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file: .env
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    volumes:
-      - ./data:/app/data
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    ports: ["8000:8000"]
+    restart: unless-stopped
+
+  worker:
+    build: ./backend
+    command: python -m worker.main
+    env_file: .env
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
 
 volumes:
-  postgres_data:
-  redis_data:
+  pgdata:
