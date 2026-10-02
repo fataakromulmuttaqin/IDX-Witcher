@@ -152,6 +152,18 @@ class Signal(Base):
     detail: Mapped[dict] = mapped_column(JSONB, default=dict)
 
 
+class SectorScore(Base):
+    __tablename__ = "sector_scores"
+    trade_date: Mapped[date] = mapped_column(Date, primary_key=True)
+    sector_id: Mapped[int] = mapped_column(ForeignKey("sectors.id"), primary_key=True)
+    members: Mapped[int] = mapped_column(Integer)
+    med_ret_3m: Mapped[float | None] = _float()
+    pct_above_sma50: Mapped[float | None] = _float()
+    score: Mapped[float | None] = _float()
+    rank: Mapped[int | None] = mapped_column(SmallInteger)
+    is_leading: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
 class IngestRun(Base):
     __tablename__ = "ingest_runs"
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)

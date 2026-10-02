@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import text
 
 from core.db import SessionLocal, upsert
-from core.models import Signal, WatchlistMember
+from core.models import SectorScore, Signal, WatchlistMember
 from core.rules import apply_rule, load_rules
 from worker.indicators import add_rule_columns, compute_indicators
 from worker.runlog import logged_run
@@ -92,6 +92,21 @@ def run(calendar_days: int = 500) -> dict:
         today["in_leading_stocks"] = today["ticker"].isin(leading["ticker"])
         ranking = sector_ranking(today)
         sector_ids = ranking.index[ranking["is_leading"]].astype(int).tolist()
+
+        sector_rows = [
+            {
+                "trade_date": day,
+                "sector_id": int(sid),
+                "members": int(r["members"]),
+                "med_ret_3m": None if pd.isna(r["med_ret_3m"]) else float(r["med_ret_3m"]),
+                "pct_above_sma50": None if pd.isna(r["pct_above_sma50"]) else float(r["pct_above_sma50"]),
+                "score": None if pd.isna(r["score"]) else float(r["score"]),
+                "rank": None if pd.isna(r["rank"]) else int(r["rank"]),
+                "is_leading": bool(r["is_leading"]),
+            }
+            for sid, r in ranking.iterrows()
+        ]
+        res["rows"] += upsert(s, SectorScore, sector_rows, ["trade_date", "sector_id"])
 
         members = []
         for slug, r in rules.items():
