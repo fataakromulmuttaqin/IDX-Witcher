@@ -1,6 +1,7 @@
 import argparse
 
 from worker.jobs import compute_indicators, ingest_prices, run_rules, sync_companies
+from worker.jobs.seed_rules import run as seed_rules
 from worker.pipeline import run_daily_pipeline
 
 
@@ -8,6 +9,7 @@ def main() -> None:
     p = argparse.ArgumentParser(prog="worker.cli")
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("seed", help="isi companies dari data/companies_seed.csv")
+    sub.add_parser("seed-rules", help="isi watchlists dari rules/watchlists.yaml")
     sub.add_parser("run-once", help="jalankan pipeline harian sekarang")
     bf = sub.add_parser("backfill", help="isi riwayat harga")
     bf.add_argument("--start", default="2021-01-01")
@@ -15,6 +17,8 @@ def main() -> None:
 
     if args.cmd == "seed":
         sync_companies.run()
+    elif args.cmd == "seed-rules":
+        seed_rules()
     elif args.cmd == "run-once":
         run_daily_pipeline(force=True)
     elif args.cmd == "backfill":

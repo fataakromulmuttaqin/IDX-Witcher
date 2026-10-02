@@ -45,6 +45,19 @@ services:
       migrate: { condition: service_completed_successfully }
       redis: { condition: service_healthy }
     restart: unless-stopped
+    volumes:
+      - ./backend/data:/app/data
+
+  runner:
+    build: ./backend
+    command: echo "Runner ready. Use 'docker compose run --rm runner python -m worker.cli <cmd>'"
+    env_file: .env
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    profiles: ["runner"]
+    volumes:
+      - ./backend/data:/app/data
 
 volumes:
   pgdata:

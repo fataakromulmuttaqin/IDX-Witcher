@@ -7,7 +7,8 @@ import httpx
 from core.cache import purge
 from core.config import get_settings
 from providers.yahoo import YahooProvider
-from worker.jobs import compute_indicators, ingest_prices, run_rules
+from worker.jobs import compute_indicators, ingest_fundamentals, ingest_prices, run_rules
+from worker.jobs.seed_rules import run as seed_rules
 
 log = logging.getLogger("pipeline")
 WIB = ZoneInfo("Asia/Jakarta")
@@ -37,6 +38,7 @@ def run_daily_pipeline(force: bool = False) -> None:
     steps = [
         ("prices", lambda: ingest_prices.run(provider)),
         ("indicators", lambda: compute_indicators.run()),
+        ("fundamentals", lambda: ingest_fundamentals.run(provider)),
         ("rules", lambda: run_rules.run()),
     ]
     for name, fn in steps:

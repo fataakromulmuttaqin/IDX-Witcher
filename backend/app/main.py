@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.errors import ApiError
-from app.routers import feed, market_map, meta, portfolio, screener, stocks, watchlists
+from app.routers import feed, market_map, meta, portfolio, screens, screener, stocks, watchlists
 from core.config import get_settings
 
 cfg = get_settings()
@@ -29,5 +29,5 @@ async def api_error_handler(_: Request, exc: ApiError):
     )
 
 
-for module in (meta, market_map, stocks, screener, watchlists, feed, portfolio):
+for module in (meta, market_map, stocks, screener, screens, watchlists, feed, portfolio):
     app.include_router(module.router, prefix="/api/v1")
