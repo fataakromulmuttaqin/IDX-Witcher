@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pandas as pd
-from sqlalchemy import text
 
 from core.db import SessionLocal, upsert
 from core.models import Company, Sector

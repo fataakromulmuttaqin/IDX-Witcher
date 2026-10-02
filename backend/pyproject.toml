@@ -32,3 +32,7 @@ include = ["core*", "providers*", "worker*", "app*"]
 
 [tool.ruff]
 line-length = 100
+
+[tool.mypy]
+ignore_missing_imports = true
+

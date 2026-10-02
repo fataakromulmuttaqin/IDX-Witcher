@@ -4,7 +4,7 @@ from sqlalchemy import text
 from core.db import SessionLocal, upsert
 from core.models import Signal, WatchlistMember
 from core.rules import apply_rule, load_rules
-from worker.indicators import add_rule_columns
+from worker.indicators import add_rule_columns, compute_indicators
 from worker.runlog import logged_run
 
 
@@ -62,10 +62,9 @@ def build_signals(today: pd.DataFrame, prev: pd.DataFrame, day) -> list[dict]:
 
 
 def run(calendar_days: int = 500) -> dict:
-    with logged_run("rules") as res:
-        with SessionLocal() as s:
-            px = pd.read_sql(
-                text("""
+    with logged_run("rules") as res, SessionLocal() as s:
+        px = pd.read_sql(
+            text("""
                     SELECT p.ticker, p.trade_date AS date, p.high, p.low, p.close, p.volume,
                            p.value_traded, c.sector_id
                     FROM prices_daily p
@@ -73,39 +72,39 @@ def run(calendar_days: int = 500) -> dict:
                     WHERE NOT p.is_suspect AND c.is_active
                       AND p.trade_date >= CURRENT_DATE - CAST(:d AS integer)
                 """),
-                s.connection(),
-                params={"d": calendar_days},
-            )
-            if px.empty:
-                return res
-            for c in ["high", "low", "close", "volume", "value_traded"]:
-                px[c] = px[c].astype(float)
-            sector = px.groupby("ticker")["sector_id"].last()
-            df = add_rule_columns(compute_indicators(px.drop(columns=["sector_id"])))
-            df["sector_id"] = df["ticker"].map(sector)
+            s.connection(),
+            params={"d": calendar_days},
+        )
+        if px.empty:
+            return res
+        for c in ["high", "low", "close", "volume", "value_traded"]:
+            px[c] = px[c].astype(float)
+        sector = px.groupby("ticker")["sector_id"].last()
+        df = add_rule_columns(compute_indicators(px.drop(columns=["sector_id"])))
+        df["sector_id"] = df["ticker"].map(sector)
 
-            days = sorted(df["date"].unique())
-            day, prev_day = days[-1], days[-2] if len(days) > 1 else None
-            today = df[df["date"] == day].copy()
+        days = sorted(df["date"].unique())
+        day, prev_day = days[-1], days[-2] if len(days) > 1 else None
+        today = df[df["date"] == day].copy()
 
-            rules = {r["slug"]: r for r in load_rules("watchlists")}
-            leading = apply_rule(today, rules["leading-stocks"]["expr"])
-            today["in_leading_stocks"] = today["ticker"].isin(leading["ticker"])
-            ranking = sector_ranking(today)
-            sector_ids = ranking.index[ranking["is_leading"]].astype(int).tolist()
+        rules = {r["slug"]: r for r in load_rules("watchlists")}
+        leading = apply_rule(today, rules["leading-stocks"]["expr"])
+        today["in_leading_stocks"] = today["ticker"].isin(leading["ticker"])
+        ranking = sector_ranking(today)
+        sector_ids = ranking.index[ranking["is_leading"]].astype(int).tolist()
 
-            members = []
-            for slug, r in rules.items():
-                hit = apply_rule(today, r["expr"], leading_sector_ids=sector_ids)
-                hit = hit.sort_values("rs_rating", ascending=False, na_position="last")
-                members += [
-                    {"slug": slug, "trade_date": day, "ticker": t, "rank": i + 1}
-                    for i, t in enumerate(hit["ticker"])
-                ]
-            res["rows"] += upsert(s, WatchlistMember, members, ["slug", "trade_date", "ticker"])
+        members = []
+        for slug, r in rules.items():
+            hit = apply_rule(today, r["expr"], leading_sector_ids=sector_ids)
+            hit = hit.sort_values("rs_rating", ascending=False, na_position="last")
+            members += [
+                {"slug": slug, "trade_date": day, "ticker": t, "rank": i + 1}
+                for i, t in enumerate(hit["ticker"])
+            ]
+        res["rows"] += upsert(s, WatchlistMember, members, ["slug", "trade_date", "ticker"])
 
-            if prev_day is not None:
-                sigs = build_signals(today, df[df["date"] == prev_day], day)
-                res["rows"] += upsert(s, Signal, sigs, ["trade_date", "ticker", "kind"])
-            s.commit()
+        if prev_day is not None:
+            sigs = build_signals(today, df[df["date"] == prev_day], day)
+            res["rows"] += upsert(s, Signal, sigs, ["trade_date", "ticker", "kind"])
+        s.commit()
     return res

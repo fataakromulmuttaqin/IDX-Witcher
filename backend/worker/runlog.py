@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from core.db import SessionLocal
 from core.models import IngestRun
@@ -14,12 +14,12 @@ def logged_run(job: str):
         s.commit()
         try:
             yield result
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             result.update(status="failed", error=str(exc)[:500])
         run.status = result["status"]
         run.rows_written = result["rows"]
         run.tickers_failed = result["failed"]
         run.error = result["error"]
-        run.finished_at = datetime.now(timezone.utc)
+        run.finished_at = datetime.now(UTC)
         s.commit()
     return result

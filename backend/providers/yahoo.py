@@ -1,3 +1,4 @@
+import logging
 import random
 import time
 
@@ -7,6 +8,7 @@ import yfinance as yf
 from core.config import get_settings
 from providers.base import DataProvider
 
+log = logging.getLogger(__name__)
 COLS = {
     "Open": "open",
     "High": "high",
@@ -21,7 +23,8 @@ def _retry(fn, attempts: int = 3, base: float = 2.0):
     for i in range(attempts):
         try:
             return fn()
-        except Exception:
+        except Exception as exc:
+            log.warning("Retry failed: %s", exc)
             if i == attempts - 1:
                 raise
             time.sleep(base ** (i + 1) + random.random())
@@ -36,7 +39,7 @@ class YahooProvider(DataProvider):
             batch = symbols[i : i + cfg.yahoo_batch_size]
             try:
                 raw = _retry(
-                    lambda: yf.download(
+                    lambda batch=batch: yf.download(
                         batch,
                         start=start,
                         end=end,
@@ -46,7 +49,8 @@ class YahooProvider(DataProvider):
                         progress=False,
                     )
                 )
-            except Exception:
+            except Exception as exc:  # noqa: BLE001
+                log.warning("Batch failed: %s", exc)
                 failed.extend(batch)
                 continue
             level0 = raw.columns.get_level_values(0) if isinstance(raw.columns, pd.MultiIndex) else []
@@ -73,8 +77,9 @@ class YahooProvider(DataProvider):
         rows = []
         for sym in symbols:
             try:
-                act = _retry(lambda: yf.Ticker(sym).actions)
-            except Exception:
+                act = _retry(lambda sym=sym: yf.Ticker(sym).actions)
+            except Exception as exc:  # noqa: BLE001
+                log.warning("Actions failed for %s: %s", sym, exc)
                 continue
             for ts, r in act.iterrows():
                 if r.get("Dividends", 0) > 0:

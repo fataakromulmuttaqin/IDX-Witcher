@@ -6,11 +6,10 @@ import yaml
 RULES_DIR = Path(__file__).resolve().parent.parent / "rules"
 
 
-def load_rules(name: str) -> list[dict]:
+def load_rules(name: str) -> list[dict] | dict:
     path = RULES_DIR / f"{name}.yaml"
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if isinstance(data, dict):
-        return data
+    data = yaml.safe_load((path).read_text(encoding="utf-8"))
+    return data
     return data
 
 
